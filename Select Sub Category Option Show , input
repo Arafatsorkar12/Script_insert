@@ -1,0 +1,136 @@
+
+<div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                                        <span id=""> {{ __('language.area') }}</span>
+                                                        <span class="required">(*)</span></label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <select name="city_area_id" id="city" onchange="wordSection()"
+                                                                class="form-control dropdownnew"
+                                                                style="font-family: sutonnyMJ;">
+                                                            <option value="">--{{ __('language.select') }} --</option>
+                                                            @foreach($cityAdd as $type)
+                                                                <option value="{{$type->id}}" {{ $type->id == $HoldingData->city_area_id ? 'selected' : '' }}>{{$type->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <input type="hidden" name="" id="" value="-1"/>
+                                                    </div>
+                                                </div>
+
+
+  <div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                                        <span id="">  {{ __('language.word') }} </span>
+                                                        <span class="required">(*)</span>
+                                                    </label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <select name="nagorik_word_id" id="word"
+                                                                onchange="sectorSection()" class="form-control"
+                                                                style="font-family: sutonnyMJ;">
+                                                            <option value="">--{{ __('language.select') }} --</option>
+                                                            @foreach($wordAdd as $type)
+                                                                <option style="display: none"
+                                                                        value="{{$type->id}}" {{ $type->id == $HoldingData->nagorik_word_id ? 'selected' : '' }}>{{$type->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <input type="hidden" name="" id=""/>
+                                                    </div>
+                                                </div>
+
+route ---------->
+
+  Route::post('nagorik-city-to-word_h', [HoldingTexApplyController::class, 'cityTOword']);
+    Route::post('nagorik-word-to-sector_h', [HoldingTexApplyController::class, 'wordTosector']);
+
+
+controller ---------->
+ public  function wordTosector(Request $request)
+    {
+        $City = $request->input('Word');
+
+        $sector=  NagorikSector::where('nagorik_word_id', $City)
+
+            ->get();
+        return $sector;
+    }
+
+    public  function cityTOword(Request $request)
+    {
+        $City = $request->input('City');
+
+        $word =  NagorikWordAdd::where('city_area_id', $City)
+
+            ->get();
+        return $word;
+    }
+
+
+
+
+     function wordSection() {
+            let city = document.getElementById('city').value;
+            let word = document.getElementById('word');
+            let url = "/nagarik/nagorik-city-to-word_h";
+            let data = {
+                City: city,
+            };
+
+            axios.post(url, data)
+                .then(function (response) {
+                    console.log(response.data);
+                    const departments = response.data;
+
+                    word.innerHTML = '';
+
+                    let placeholderOption = document.createElement('option');
+                    placeholderOption.value = '';
+                    placeholderOption.text = '--Select --';
+                    word.appendChild(placeholderOption);
+
+                    departments.sort();
+
+                    departments.forEach(function (department) {
+                        let option = document.createElement('option');
+                        option.value = department.id;
+                        option.text = department.name;
+                        word.appendChild(option);
+                    });
+                })
+                .catch(function (error) {
+
+                })
+        }
+
+
+  function sectorSection() {
+            let word = document.getElementById('word').value;
+            let section = document.getElementById('section');
+            let url = "/nagarik/nagorik-word-to-sector_h";
+            let data = {
+                Word: word,
+            };
+
+            axios.post(url, data)
+                .then(function (response) {
+                    console.log(response.data);
+                    const departments = response.data;
+
+                    section.innerHTML = '';
+
+                    let placeholderOption = document.createElement('option');
+                    placeholderOption.value = '';
+                    placeholderOption.text = '--Select --';
+                    section.appendChild(placeholderOption);
+
+                    departments.sort();
+
+                    departments.forEach(function (department) {
+                        let option = document.createElement('option');
+                        option.value = department.id;
+                        option.text = department.name;
+                        section.appendChild(option);
+                    });
+                })
+                .catch(function (error) {
+
+                })
+        }
