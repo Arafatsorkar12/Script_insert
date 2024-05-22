@@ -1,0 +1,86 @@
+
+<div class="row form-page  active">
+<---text---->
+</div>
+
+<div class="row form-page ">
+<---text---->
+</div>
+
+   <div class="mt-4">
+            <div class="row">
+                <div class="col-md-6"></div>
+                <div class="col-md-6 ">
+                    <div class="navigation ">
+                        <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6">
+                                <div class="navigation">
+                                    <div class="row" style="justify-content: space-between">
+                                        <div class="col-sm-6 pull-left">
+                                            <button type="button" class="previous btn btn-primary" style="display: none" onclick="showPage(-1)">{{ __('language.Previous') }}</button>
+                                        </div>
+                                        <div class="col-sm-6 pull-right">
+                                            <button type="button" class="nexts btn btn-primary" onclick="showPage(1)">{{ __('language.next') }}</button>
+                                            <input type="submit" value="{{ __('language.submit') }}" id=" " style="display: none" class="sub btn btn-primary"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        let currentPage = 0;
+        const formPages = document.querySelectorAll('.form-page');
+        const nextButton = document.querySelector('.nexts'); // Select the Next button
+        const previousButton = document.querySelector('.previous'); // Select the Next button
+        const subButton = document.querySelector('.sub'); // Select the Next button
+
+        function validateCurrentPage() {
+            const inputs = formPages[currentPage].querySelectorAll('input[required], select[required], textarea[required]');
+
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (input.value.trim() === '') {
+                    isValid = false;
+                    console.log('Validation error: Please fill in all required fields');
+                } else if (!input.checkValidity()) {
+                    isValid = false;
+                    console.log('Validation error:', input.validationMessage);
+                }
+            });
+
+            return isValid;
+        }
+
+        function showPage(increment) {
+            const newPage = currentPage + increment;
+            if (newPage >= 0 && newPage < formPages.length) {
+
+                // if (validateCurrentPage()) {
+                    formPages[currentPage].classList.remove('active');
+                    formPages[newPage].classList.add('active');
+                    currentPage = newPage;
+
+                    if (currentPage === formPages.length - 1) {
+                        nextButton.style.display = 'none';
+                        subButton.style.display = 'block';
+                    } else {
+                        nextButton.style.display = 'block';
+                        subButton.style.display = 'none';
+                    }
+
+                    if (currentPage === 0) {
+                        previousButton.style.display = 'none';
+                    } else {
+                        previousButton.style.display = '';
+                    }
+                }
+            // }
+        }
