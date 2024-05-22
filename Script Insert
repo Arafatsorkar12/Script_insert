@@ -1,0 +1,58 @@
+
+
+ 
+                                                                  <span>
+                                                                      <span id=" " class="control-label"
+                                                                            style="font-weight:normal;text-align: left">
+                                                                     <input type="text" name="holding_no" id="p_holding_no" required
+                                                                            value="{{optional($profile->permanent)->holding_no}}">
+
+                                                                    </span>
+                                                                  </span>
+                                                             
+
+
+
+
+
+
+    function profileSave1() {
+       
+        
+        let p_holding_no = document.getElementById('p_holding_no').value;
+       
+
+
+        let url = "/nagarik/ajax-store-and-update";
+        let data = {
+     
+            P_Holding_no:p_holding_no,
+          
+        };
+        console.log(data)
+        axios.post(url, data)
+            .then(function (response) {
+                // alert( response.data)
+
+
+
+
+            })
+            .catch(function (error) {
+
+            })
+    }
+
+
+    Route::post('ajax-store-and-update', [NagorikUserDetailsController::class, 'AjaxStoreAndUpdate']);
+
+
+
+
+public function AjaxStoreAndUpdate(Request $request)
+    {
+
+
+
+        $userDetails = NagorikUseDetails::updateOrCreate(
+            [
