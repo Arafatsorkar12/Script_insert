@@ -91,3 +91,32 @@ Route::post('create-drug', [HospitalAjaxDataController::class, 'createDrug'])->n
             'medicine_type' => $drug->medicine_type, // Adjust based on your relationship
         ]);
     }
+
+
+button with add ============================>>>
+
+
+   change: function(event, ui) {
+                    if (!ui.item) {
+                        $('#create-dd').show();
+
+                        // createNewDrug($('#drug_name').val());
+                    }
+
+                }
+
+
+
+
+   $('#create-dd').click(function() {
+
+                var drugName = $('#drug_name').val();
+                if (drugName) {
+                    $('#create-dd').hide();
+                    createNewDrug(drugName);
+                }
+            });
+
+
+
+                                <i id="create-dd" class="fas fa-plus-circle" style="display: none!important; cursor: pointer;" title="Create New Drug"></i>
