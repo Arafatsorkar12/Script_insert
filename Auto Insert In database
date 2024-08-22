@@ -120,3 +120,81 @@ button with add ============================>>>
 
 
                                 <i id="create-dd" class="fas fa-plus-circle" style="display: none!important; cursor: pointer;" title="Create New Drug"></i>
+
+
+Random Add / update =================> 
+
+ <script>
+
+        $(document).ready(function() {
+
+            $('#create-dd').click(function() {
+                var noteName = $('#note_name').val();
+
+                if (noteName.trim() === "") {
+                    alert("Please enter a note name.");
+                    return;
+                }
+
+                createNewDrug(noteName);
+            });
+
+             function createNewDrug(note) {
+                $.ajax({
+                    url: '{!! url('/dokani/create_not', $sale->id) !!}',
+                    method: 'POST',
+                    data: {
+                        name: note,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                       
+                            $('#note_name').val('');
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(error);
+                        alert('An error occurred. Please try again.');
+                    }
+                });
+            }
+        });
+
+
+
+
+
+    </script>
+
+<td style="border: none !important; font-size: 15px; width: 25%" colspan="{{ $colspan - 1 }}" rowspan="4">
+                                                     <span class="no-print">
+                                                           Note :
+                                                           <i id="create-dd" class="fas fa-plus-circle" style="cursor: pointer;" title="Create New Note"></i>
+                                                     </span>
+                                                     <div class=" " style="width: 25%">
+                                                        <textarea  class="form-control p-border" id="note_name" name="note_name" placeholder="Note Name">{!!$sale->sale_note !!}</textarea>
+                                                    </div>
+
+                                                </td>
+
+
+
+    Route::post('create_not/{sale}', [SaleController::class, 'createNote']);
+
+
+
+  public  function createNote($id,Request $request)
+   {
+
+
+       $Sale_not =   Sale::find($id);
+
+
+       $Sale_not->update([
+           'sale_note' =>$request->name ,
+       ]);
+
+
+
+   }
+
