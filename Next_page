@@ -44,7 +44,7 @@
         function validateCurrentPage() {
             const inputs = formPages[currentPage].querySelectorAll('input[required], select[required], textarea[required]');
 
-            let isValid = true;
+            let isValid = true;    
 
             inputs.forEach(input => {
                 if (input.value.trim() === '') {
