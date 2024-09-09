@@ -17,7 +17,7 @@
 
 
     function profileSave1() {
-       
+      
         
         let p_holding_no = document.getElementById('p_holding_no').value;
        
